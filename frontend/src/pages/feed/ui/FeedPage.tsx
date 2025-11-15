@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { GenerateForm } from "../../../features/generate/ui";
 
-const API_URL = "https://calculators-swaziland-coated-reported.trycloudflare.com";
+import { API_URL } from "../../../shared/api/config";
 
 // Тип для элемента ленты
 interface ImageInfo {

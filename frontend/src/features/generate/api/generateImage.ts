@@ -1,4 +1,4 @@
-const API_URL = "https://blackjack-proved-limited-street.trycloudflare.com";
+import { API_URL } from "../../../shared/api/config";
 
 export async function generateImage(prompt: string) {
   const res = await fetch(`${API_URL}/generate`, {
@@ -7,6 +7,5 @@ export async function generateImage(prompt: string) {
     body: JSON.stringify({ prompt }),
   });
 
-  if (!res.ok) throw new Error("Ошибка генерации");
   return res.json();
 }
