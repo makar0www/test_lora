@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface GenerateResponse {
   imageUrl: string;
@@ -11,6 +11,26 @@ function App() {
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  // 📌 Загружаем список всех изображений при входе
+  async function loadImages() {
+    try {
+      const res = await fetch(`${API_URL}/images-list`);
+      const data: string[] = await res.json();
+
+      // Преобразуем пути в абсолютные ссылки
+      const formatted = data.map((path) => `${API_URL}${path}`);
+
+      setImages(formatted.reverse()); // последние сверху
+    } catch (err) {
+      console.error("Ошибка загрузки ленты:", err);
+    }
+  }
+
+  useEffect(() => {
+    loadImages();
+  }, []);
+
+  // 📌 Генерация изображения
   async function generateImage() {
     if (!prompt.trim()) return;
 
@@ -29,17 +49,28 @@ function App() {
 
       const url = `${API_URL}${data.imageUrl}`;
 
+      // 1) Мгновенно показываем картинку
       setImages((prev) => [url, ...prev]);
+
+      // 2) И обновляем ленту полностью
+      fetch(`${API_URL}/images-list`)
+        .then((r) => r.json())
+        .then((list) => {
+          const updated = list.map((item: string) => `${API_URL}${item}`);
+          setImages(updated.reverse());
+        });
+
     } catch (error) {
       console.error("Ошибка запроса:", error);
     } finally {
       setLoading(false);
+      setPrompt("");
     }
   }
 
   return (
     <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-      <h1>Image Generator</h1>
+      <h1>Image Generator (shared feed)</h1>
 
       <input
         type="text"
