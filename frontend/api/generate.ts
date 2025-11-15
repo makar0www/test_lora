@@ -1,7 +1,7 @@
 import type { ApiRequest, ApiResponse } from "../types/vercel";
 
 const BACKEND =
-  "https://calculators-swaziland-coated-reported.trycloudflare.com";
+  "https://blackjack-proved-limited-street.trycloudflare.com";
 
 interface GenerateResponse {
   imageUrl: string;
