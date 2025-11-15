@@ -1,4 +1,4 @@
-const API_URL = "https://calculators-swaziland-coated-reported.trycloudflare.com";
+const API_URL = "https://blackjack-proved-limited-street.trycloudflare.com";
 
 export async function generateImage(prompt: string) {
   const res = await fetch(`${API_URL}/generate`, {

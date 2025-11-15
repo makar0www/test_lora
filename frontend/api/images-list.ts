@@ -2,7 +2,7 @@ import type { ApiRequest, ApiResponse } from '../types/vercel';
 import type { ImageInfo } from "../types/images";
 
 const BACKEND =
-  "https://calculators-swaziland-coated-reported.trycloudflare.com";
+  "https://blackjack-proved-limited-street.trycloudflare.com";
 
 export default async function handler(
   req: ApiRequest,
