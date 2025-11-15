@@ -1,1 +1,1 @@
-export const API_URL = "https://blackjack-proved-limited-street.trycloudflare.com";
+export const API_URL = "https://lora123.loca.lt";

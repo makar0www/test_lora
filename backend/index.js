@@ -10,35 +10,50 @@ const { initBot } = require("./bot");
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// 🟢 CORS FIX — ставим самым первым
+/* ========================================================
+   🟢 ГЛАВНЫЙ FIX ДЛЯ LOCALHOST / LOCALTUNNEL / VERCEL
+   Ставим САМЫМ ПЕРВЫМ, обрабатываем OPTIONS
+======================================================== */
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
   next();
 });
 
-// middlewares
+/* ========================================================
+   🟡 Основные middlewares
+======================================================== */
 app.use(cors());
 app.use(express.json());
 
-// раздаём статику
+/* ========================================================
+   🟣 Раздача статики (картинки)
+======================================================== */
 const storagePath = path.join(__dirname, "storage");
 app.use("/images", express.static(storagePath));
 
-// health-check
+/* ========================================================
+   ❤️ Health check
+======================================================== */
 app.get("/", (req, res) => {
   res.json({ status: "ok", message: "Backend работает" });
 });
 
-// 📌 Эндпоинт ленты изображений
+/* ========================================================
+   📸 Лента изображений — читаем storage напрямую
+======================================================== */
 app.get("/images-list", async (req, res) => {
   try {
     const files = await fs.promises.readdir(storagePath);
 
     const list = files
-      .filter((f) => f.endsWith(".png") || f.endsWith(".jpg"))
-      .map((f) => `/images/${f}`)
+      .filter((file) => file.endsWith(".png") || file.endsWith(".jpg"))
+      .map((file) => `/images/${file}`)
       .sort();
 
     res.json(list);
@@ -48,7 +63,9 @@ app.get("/images-list", async (req, res) => {
   }
 });
 
-// endpoint /generate
+/* ========================================================
+   🎨 Генерация изображения
+======================================================== */
 app.post("/generate", async (req, res) => {
   try {
     const { prompt } = req.body;
@@ -69,10 +86,14 @@ app.post("/generate", async (req, res) => {
   }
 });
 
-// старт сервера
+/* ========================================================
+   🚀 Старт сервера
+======================================================== */
 app.listen(PORT, () => {
   console.log(`[server] Сервер запущен на http://localhost:${PORT}`);
 });
 
-// запуск Telegram-бота
+/* ========================================================
+   🤖 Запуск Telegram-бота
+======================================================== */
 initBot(generateImage);
