@@ -15,7 +15,7 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch("https://lovely-dodos-hunt.loca.lt/generate", {
+      const response = await fetch("https://dirty-geckos-search.loca.lt/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,9 +25,8 @@ function App() {
 
       const data: GenerateResponse = await response.json();
 
-      const url = "https://lovely-dodos-hunt.loca.lt" + data.imageUrl;
+      const url = "https://dirty-geckos-search.loca.lt" + data.imageUrl;
 
-      // Добавить новую картинку в начало списка
       setImages((prev) => [url, ...prev]);
     } catch (error) {
       console.error("Ошибка запроса:", error);
