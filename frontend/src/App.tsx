@@ -4,6 +4,8 @@ interface GenerateResponse {
   imageUrl: string;
 }
 
+const API_URL = "https://calculators-swaziland-coated-reported.trycloudflare.com";
+
 function App() {
   const [prompt, setPrompt] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
@@ -15,7 +17,7 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch("https://dirty-geckos-search.loca.lt/generate", {
+      const response = await fetch(`${API_URL}/generate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,7 +27,7 @@ function App() {
 
       const data: GenerateResponse = await response.json();
 
-      const url = "https://dirty-geckos-search.loca.lt" + data.imageUrl;
+      const url = `${API_URL}${data.imageUrl}`;
 
       setImages((prev) => [url, ...prev]);
     } catch (error) {
